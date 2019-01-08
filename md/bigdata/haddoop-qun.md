@@ -9,7 +9,7 @@ zookeeper | 3.4.13
 ## 二、集群规划
 
 主机名 | IP | 安装的软件 | 运行的进程
--|:-:|:-:|:-:
+-|:-|:-|:-
 alphasta01 | 192.168.16.90 | JDK、hadoop|  NameNode、DFSZKFailoverController
 alphasta02 | 192.168.16.91 | JDK、hadoop|  NameNode、DFSZKFailoverController
 alphasta03 | 192.168.16.92 | JDK、hadoop|  ResourceManager
