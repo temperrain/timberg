@@ -10,9 +10,9 @@ zookeeper | 3.4.13
 
 主机名 | IP | 安装的软件 | 运行的进程
 -|:-|:-|:-
-alphasta01 | 192.168.16.90 | JDK、hadoop|  NameNode、DFSZKFailoverController
-alphasta02 | 192.168.16.91 | JDK、hadoop|  NameNode、DFSZKFailoverController
-alphasta03 | 192.168.16.92 | JDK、hadoop|  ResourceManager
-alphasta04 | 192.168.16.93 | JDK、hadoop、zookeeper|  DataNode、NodeManager、JournalNode、QuorumPeerMain
-alphasta05 | 192.168.16.94 | JDK、hadoop、zookeeper|  DataNode、NodeManager、JournalNode、QuorumPeerMain
-alphasta06 | 192.168.16.95 | JDK、hadoop、zookeeper|  DataNode、NodeManager、JournalNode、QuorumPeerMain
+alphasta01 | 192.168.16.90 | JDK、hadoop| NameNode、DFSZKFailoverController
+alphasta02 | 192.168.16.91 | JDK、hadoop| NameNode、DFSZKFailoverController
+alphasta03 | 192.168.16.92 | JDK、hadoop| ResourceManager
+alphasta04 | 192.168.16.93 | JDK、hadoop、zookeeper| DataNode、NodeManager、JournalNode、QuorumPeerMain
+alphasta05 | 192.168.16.94 | JDK、hadoop、zookeeper| DataNode、NodeManager、JournalNode、QuorumPeerMain
+alphasta06 | 192.168.16.95 | JDK、hadoop、zookeeper| DataNode、NodeManager、JournalNode、QuorumPeerMain
