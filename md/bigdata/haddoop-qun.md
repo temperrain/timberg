@@ -1,10 +1,11 @@
-## 一、软件说明
+## 一、系统/软件说明
 
-软件名称 | 版本号
+系统软件 | 版本号
 -|:-:
 JDK | 1.8 
 hadoop | 2.9.2
 zookeeper | 3.4.13
+Linux系统 | CentOS7
 
 ## 二、集群规划
 
@@ -16,4 +17,6 @@ alphasta03|192.168.16.92|JDK、hadoop|ResourceManager
 alphasta04|192.168.16.93|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
 alphasta05|192.168.16.94|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
 alphasta06|192.168.16.95 | JDK、hadoop、zookeeper| DataNode、NodeManager、JournalNode、QuorumPeerMain
+
+## 三、环境配置
 
