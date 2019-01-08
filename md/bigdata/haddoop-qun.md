@@ -24,5 +24,15 @@ alphasta06|192.168.16.95|JDK、hadoop、zookeeper|DataNode、NodeManager、Journ
 
 ## 样板机配置
 
+### 设置系统环境
+
+1. 设置机器名
+
+   以root用户登录，命令行终端使用# vi /etc/sysconfig/network 打开配置文件，根据集群规划分别设置机器名
+
+   `NETWORKING=yes`
+   `HOSTNAME=alphasta01`
+
+
 
 
