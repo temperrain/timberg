@@ -35,35 +35,35 @@ NETWORKING=yes
 HOSTNAME=alphasta01
 ```
 
-1.   **设置IP地址**
+2.   **设置IP地址**
 
    以root用户登录，打开配置文件 # vi/etc/sysconfig/network-scripts/ifcfg-enp0s3，通过以上方法设置网络配置后，使用命令# service network restart 重启网络，并使用 # ifconfig 查看IP是否生效，如果需要设置后远程连接，建议重启机器。
 
 ```
-    TYPE="Ethernet"                                 以太网类型
-    PROXY_METHOD="none"
-    BROWSER_ONLY="no"
-    BOOTPROTO="static"                              使用静态IP，而不是用DHCP分配IP
-    DEFROUTE="yes"
-    IPV4_FAILURE_FATAL="no"
-    IPV6INIT="yes"
-    IPV6_AUTOCONF="yes"
-    IPV6_DEFROUTE="yes"
-    IPV6_FAILURE_FATAL="no"
-    IPV6_ADDR_GEN_MODE="stable-privacy"
-    NAME="enp0s3"                                    网络连接名称
-    UUID="b6591044-1086-4cc4-af48-876b26c0e739"
-    DEVICE="enp0s3"                                  对应第一张网卡
-    ONBOOT="yes"                                     是否启动运行
-    IPADDR=192.168.16.59                             指定本机IP地址
-    GATEWAY=192.168.16.1                             指定网关
-    NETMASK=255.255.255.0                            
-    DNS1=222.222.222.222                             DNS地址，配置后同步到 /etc/resolv.conf
+ TYPE="Ethernet"                                 以太网类型
+ PROXY_METHOD="none"
+ BROWSER_ONLY="no"
+ BOOTPROTO="static"                              使用静态IP，而不是用DHCP分配IP
+ DEFROUTE="yes"
+ IPV4_FAILURE_FATAL="no"
+ IPV6INIT="yes"
+ IPV6_AUTOCONF="yes"
+ IPV6_DEFROUTE="yes"
+ IPV6_FAILURE_FATAL="no"
+ IPV6_ADDR_GEN_MODE="stable-privacy"
+ NAME="enp0s3"                                    网络连接名称
+ UUID="b6591044-1086-4cc4-af48-876b26c0e739"
+ DEVICE="enp0s3"                                  对应第一张网卡
+ ONBOOT="yes"                                     是否启动运行
+ IPADDR=192.168.16.59                             指定本机IP地址
+ GATEWAY=192.168.16.1                             指定网关
+ NETMASK=255.255.255.0                            
+ DNS1=222.222.222.222                             DNS地址，配置后同步到 /etc/resolv.conf
 ```
 
-1.  **设置HOST映射文件**
+3.  **设置HOST映射文件**
 
-   以root用户登录，在命令终端使用# vi /etc/hosts打开配置文件，根据集群规划添加如下内容
+   以root用户登录，在命令终端使用# vi /etc/hosts打开配置文件，根据集群规划添加如下内容，设置完成后，使用#ping alphasta01检测。
 
 ```   
  192.168.16.91     alphasta01
@@ -73,3 +73,31 @@ HOSTNAME=alphasta01
  192.168.16.95     alphasta05 
  192.168.16.96     alphasta06 
 ```
+4. ***关闭防火墙和SELinux 需重启机器生效***
+ 
+  > CentOS 7.0默认使用的是firewall作为防火墙，使用iptables必须重新设置一下
+
+  - 直接关闭防火墙
+    ```
+      systemctl stop firewalld.service        停止firewall
+      systemctl disable firewalld.service     禁止firewall开机启动
+
+      systemctl restart iptables.service      重启防火墙使配置生效
+      systemctl enable iptables.service       设置防火墙开机启动
+    ```
+   - ~~设置iptables service,如果使用service iptables 需要设置一下~~
+ 
+   ```
+      yum -y install iptables-services                           切换到root用户 安装
+
+      service iptables [start|stop|restart|save|status]          之后就可以使用了
+
+      vi /etc/sysconfig/iptables                                 修改防火墙配置，如添加端口9908
+   ```
+
+
+   - 关闭SELinux
+
+  > 以root用户登录，编辑文件 # vi /etc/selinux/config,设置SELINUX=disable
+     
+
