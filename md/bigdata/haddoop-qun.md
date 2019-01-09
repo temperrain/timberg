@@ -101,3 +101,11 @@ HOSTNAME=alphasta01
   > 以root用户登录，编辑文件 # vi /etc/selinux/config,设置SELINUX=disable
      
 
+### 配置运行环境
+
+ 1. 添加hadoop用户组
+```
+ groupadd -g 1000 hadoop                    指定用户组ID 1000 （系统用户组ID不低于500）
+ useradd -u 2000 -g hadoop hadoop           指定用户UID 2000 及所属的主组
+ passwd hadoop                              指定用户密码
+```
