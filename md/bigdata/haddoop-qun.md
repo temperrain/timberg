@@ -45,12 +45,6 @@ HOSTNAME=alphasta01
  BROWSER_ONLY="no"
  BOOTPROTO="static"                              使用静态IP，而不是用DHCP分配IP
  DEFROUTE="yes"
- IPV4_FAILURE_FATAL="no"
- IPV6INIT="yes"
- IPV6_AUTOCONF="yes"
- IPV6_DEFROUTE="yes"
- IPV6_FAILURE_FATAL="no"
- IPV6_ADDR_GEN_MODE="stable-privacy"
  NAME="enp0s3"                                    网络连接名称
  UUID="b6591044-1086-4cc4-af48-876b26c0e739"
  DEVICE="enp0s3"                                  对应第一张网卡
@@ -119,4 +113,24 @@ vi /etc/sudoers             打开该配置文件，找到 root ALL=(ALL) ALL �
 
 ```
 
-3. 统一目录结构
+3. 统一目录结构（所属组和用户均为hadoop）
+
+```
+ mkdir /tmp/alphasta                          临时上传目录
+
+ chown -R hadoop:hadoop /tmp/alphasta         将/tem/alphasta 目录用户及用户组改为hadoop
+
+ mkdir /tmp/alphasta/soft                     上传的临时第三方软件
+
+ mkdir /opt/modules                           软件安装目录
+
+ chown -R hadoop:hadoop /opt/modules          将该目录的用户组设定为 hadoop
+```
+
+4. 安装和配置JDK
+
+   - JDK安装包（jdk-8u191-linux-x64.tar.gz）              上传 到 /tmp/alphasta/soft目录下
+   - cd /tmp/alphasta/soft                               验证是否上传成功
+   - tar -zxvf jdk-8u191-linux-x64.tar.gz -C /usr/lib    将JDK解压到 /usr/lib目录下
+   - cd /usr/lib      ls                                 验证是否解压成功
+   - 
