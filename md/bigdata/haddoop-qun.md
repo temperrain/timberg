@@ -103,9 +103,20 @@ HOSTNAME=alphasta01
 
 ### 配置运行环境
 
- 1. 添加hadoop用户组
+ 1. 添加hadoop用户/用户组
 ```
  groupadd -g 1000 hadoop                    指定用户组ID 1000 （系统用户组ID不低于500）
  useradd -u 2000 -g hadoop hadoop           指定用户UID 2000 及所属的主组
  passwd hadoop                              指定用户密码
 ```
+
+2. 后续会用到sudo命令，故需把hadoop用户加入到sudoers中
+
+```
+chmod u+w /etc/sudoers      先修改该配置文件的权限
+
+vi /etc/sudoers             打开该配置文件，找到 root ALL=(ALL) ALL 在其下边添加 hadoop ALL=（ALL）
+
+```
+
+3. 统一目录结构
