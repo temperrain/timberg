@@ -152,3 +152,15 @@ export PATH=$PATH:$JAVA_HOME/bin
 ```
 - source /etc/profile                                 使配置文件生效
 - Java -version                                       在任意目录输入此命令验证是否安装成功
+
+5. ***安装 hadoop***
+
+- 上传hadoop 安装包到 /alphastaApp
+- tar -zxvf hadoop-2.9.2.tar.gz -C /opt/modules/      解压到/opt/modules目录下
+- cd /opt/modules   ls                                切换到/opt/modules目录下查看是否解压成功
+
+
+## 分发已配置应用
+
+
+
