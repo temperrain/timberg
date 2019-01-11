@@ -94,6 +94,9 @@ HOSTNAME=alphasta01
 
   > 以root用户登录，编辑文件 # vi /etc/selinux/config,设置SELINUX=disable
      
+5. SSH 免密码登录
+
+
 
 ### 配置运行环境
 
@@ -116,11 +119,9 @@ vi /etc/sudoers             打开该配置文件，找到 root ALL=(ALL) ALL �
 3. 统一目录结构（所属组和用户均为hadoop）
 
 ```
- mkdir /tmp/alphasta                          临时上传目录
+ mkdir /alphastaApp                           上传目录
 
- chown -R hadoop:hadoop /tmp/alphasta         将/tem/alphasta 目录用户及用户组改为hadoop
-
- mkdir /tmp/alphasta/soft                     上传的临时第三方软件
+ chown -R hadoop:hadoop /alphastaApp          将/tem/alphasta 目录用户及用户组改为hadoop
 
  mkdir /opt/modules                           软件安装目录
 
@@ -129,8 +130,8 @@ vi /etc/sudoers             打开该配置文件，找到 root ALL=(ALL) ALL �
 
 4. 安装和配置JDK
 
-   - JDK安装包（jdk-8u191-linux-x64.tar.gz）              上传 到 /tmp/alphasta/soft目录下
-   - cd /tmp/alphasta/soft                               验证是否上传成功
+   - JDK安装包（jdk-8u191-linux-x64.tar.gz）              上传 到 /alphastaApp目录下
+   - cd /alphastaApp                                     验证是否上传成功
    - tar -zxvf jdk-8u191-linux-x64.tar.gz -C /usr/lib    将JDK解压到 /usr/lib目录下
    - cd /usr/lib      ls                                 验证是否解压成功
    - 
