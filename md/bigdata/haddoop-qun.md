@@ -95,7 +95,19 @@ HOSTNAME=alphasta01
   > 以root用户登录，编辑文件 # vi /etc/selinux/config,设置SELINUX=disable
      
 5. SSH 免密码登录
+    
+    1. 分别在所有节点上执行 ssh-keygen 命令，一路回车，生成秘钥即可 
+    1. 分别在所有结点上执行以下命令，把本机的公钥追到其他节点的 .ssh/authorized_keys 里，期间可能需要输入一次yes
 
+   ```
+     ssh-copy-id alphasta01
+     ssh-copy-id alphasta02
+     ssh-copy-id alphasta03
+     ssh-copy-id alphasta04
+     ssh-copy-id alphasta05
+     ssh-copy-id alphasta06
+   ```
+    1. 验证是否免密成功 ssh alphasta01 
 
 
 ### 配置运行环境
