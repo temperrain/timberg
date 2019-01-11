@@ -18,24 +18,18 @@ alphasta04|192.168.16.94|JDK、hadoop、zookeeper|DataNode、NodeManager、Journ
 alphasta05|192.168.16.95|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
 alphasta06|192.168.16.96|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
 
-***
-##### 集群搭建方式采用先安装配置好一台样板机，然后再拷贝到其它设备的方式进行
-*** 
+## 设置系统环境
 
-## 样板机配置
-
-### 设置系统环境
-
-1.   **设置机器名**
+1.     设置机器名
 
    以root用户登录，命令行终端使用# vi /etc/sysconfig/network 打开配置文件，根据集群规划分别设置机器名，重启后生效
 
 ```
-NETWORKING=yes
-HOSTNAME=alphasta01
+   NETWORKING=yes
+   HOSTNAME=alphasta01
 ```
 
-2.   **设置IP地址**
+2.    **设置IP地址**
 
    以root用户登录，打开配置文件 # vi/etc/sysconfig/network-scripts/ifcfg-enp0s3，通过以上方法设置网络配置后，使用命令# service network restart 重启网络，并使用 # ifconfig 查看IP是否生效，如果需要设置后远程连接，建议重启机器。
 
@@ -69,7 +63,9 @@ HOSTNAME=alphasta01
 ```
 4. ***关闭防火墙和SELinux 需重启机器生效***
  
-  > CentOS 7.0默认使用的是firewall作为防火墙，使用iptables必须重新设置一下
+
+  ` CentOS 7.0默认使用的是firewall作为防火墙，使用iptables必须重新设置一下`
+
 
   - 直接关闭防火墙
     ```
@@ -88,16 +84,15 @@ HOSTNAME=alphasta01
 
       vi /etc/sysconfig/iptables                                 修改防火墙配置，如添加端口9908
    ```
-
-
    - 关闭SELinux
 
-  > 以root用户登录，编辑文件 # vi /etc/selinux/config,设置SELINUX=disable
-     
-5. SSH 免密码登录
+   `以root用户登录，编辑文件 # vi /etc/selinux/config,设置SELINUX=disable`
+
+
+5. SSH免密码登录
     
-    1. 分别在所有节点上执行 ssh-keygen 命令，一路回车，生成秘钥即可 
-    1. 分别在所有结点上执行以下命令，把本机的公钥追到其他节点的 .ssh/authorized_keys 里，期间可能需要输入一次yes
+    - 分别在所有节点上执行 ssh-keygen 命令，一路回车，生成秘钥即可 
+    - 分别在所有结点上执行以下命令，把本机的公钥追到其他节点的 .ssh/authorized_keys 里，期间可能需要输入一次yes
 
    ```
      ssh-copy-id alphasta01
@@ -107,10 +102,13 @@ HOSTNAME=alphasta01
      ssh-copy-id alphasta05
      ssh-copy-id alphasta06
    ```
-    1. 验证是否免密成功 ssh alphasta01 
+    - 验证是否免密成功 ssh alphasta01 
 
+***
+##### 集群搭建方式采用先安装配置好一台样板机，然后再拷贝到其它设备的方式进行
+*** 
 
-### 配置运行环境
+## 配置样板机
 
  1. 添加hadoop用户/用户组
 ```
@@ -133,7 +131,7 @@ vi /etc/sudoers             打开该配置文件，找到 root ALL=(ALL) ALL �
 ```
  mkdir /alphastaApp                           上传目录
 
- chown -R hadoop:hadoop /alphastaApp          将/tem/alphasta 目录用户及用户组改为hadoop
+ chown -R hadoop:hadoop /alphastaApp          将/alphastaApp 目录用户及用户组改为hadoop
 
  mkdir /opt/modules                           软件安装目录
 
@@ -146,4 +144,11 @@ vi /etc/sudoers             打开该配置文件，找到 root ALL=(ALL) ALL �
    - cd /alphastaApp                                     验证是否上传成功
    - tar -zxvf jdk-8u191-linux-x64.tar.gz -C /usr/lib    将JDK解压到 /usr/lib目录下
    - cd /usr/lib      ls                                 验证是否解压成功
-   - 
+   - vi /etc/profile                                     打开配置文件，按下 shift + G 快速到文件末尾
+   - 在文件末尾添加如下内容，:wq保存退出（shift +ZZ）
+     ```
+       export JAVA_HOME=/usr/lib/jdk-8u191-linux-x64
+       export PATH=$PATH:$JAVA_HOME/bin
+     ```
+   - source /etc/profile                                 使配置文件生效
+   - Java -version                                       在任意目录输入此命令验证是否安装成功
