@@ -183,7 +183,7 @@ vi hadoop.env.sh 修改JAVA_HOEM的值     退出保存
 第二个文件： core-site.xml
 
 说明：第一个property配置的是nameservice，nameservice包含两个NameNode，一个是Active状态，另一个额是Standby状态，在集群当中，DataNode不直接连向某NameNode，而是与NameService直接相连。（****注意：<property></property>与<configuration></configuration>之间以Tab缩进，<property></property>里面的属性也用Tab缩进，否则可能会有问题。
-```
+
 <configuration>
      <!-- 指定hdfs的nameservice为ns1 -->
        <property>                                          
@@ -201,7 +201,7 @@ vi hadoop.env.sh 修改JAVA_HOEM的值     退出保存
             <value>itcast04:2181,itcast05:2181,itcast06:2181</value>   
        </property>
     </configuration>
-```
+
 
 
 ## 分发已配置应用
