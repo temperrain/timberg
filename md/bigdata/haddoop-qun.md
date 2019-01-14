@@ -144,7 +144,7 @@ chown -R hadoop:hadoop /opt/modules          将该目录的用户组设定为 h
 - cd /alphastaApp                                     验证是否上传成功
 - tar -zxvf jdk-8u191-linux-x64.tar.gz -C /usr/lib    将JDK解压到 /usr/lib目录下
 - cd /usr/lib      ls                                 验证是否解压成功
-- vi /etc/profile                                     打开配置文件，按下 shift + G 快速到文件末尾
+- vi /etc/profile                                     打开配置文件，按下 shift + G 快速到文件末尾 按o键新增一行
 - 在文件末尾添加如下内容，:wq保存退出（shift +ZZ）
 ```
 export JAVA_HOME=/usr/lib/jdk-8u191-linux-x64
@@ -153,13 +153,56 @@ export PATH=$PATH:$JAVA_HOME/bin
 - source /etc/profile                                 使配置文件生效
 - Java -version                                       在任意目录输入此命令验证是否安装成功
 
-5. ***安装 hadoop***
+5. ***安装和配置 hadoop***
 
 - 上传hadoop 安装包到 /alphastaApp
 - tar -zxvf hadoop-2.9.2.tar.gz -C /opt/modules/      解压到/opt/modules目录下
 - cd /opt/modules   ls                                切换到/opt/modules目录下查看是否解压成功
-- hadoop 暂不进行配置                                   后续章节统一配置集群
  
+> 安装完hadoop之后再配置HDFS，（hadoop2.0所有的配置文件都在$HADOOP_HOME/etc/hadoop目录下）
+
+- 将hadoop 添加到环境变量
+```
+vi /etc/profile                      shift + G 跳转到文件末尾，添加如下内容
+
+export HADOOP_HOME=/opt/modules/hadoop-2.9.2
+export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin
+```
+
+- 配置hadoop，共6个文件
+```
+cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
+
+
+第一个文件： hadoop.env.sh
+
+说明：修改Java的导出路径，如（export JAVA_HOME=/usr/java/jdk1.8.0_80）
+vi hadoop.env.sh 修改JAVA_HOEM的值     退出保存
+
+
+第二个文件： core-site.xml
+
+说明：第一个property配置的是nameservice，nameservice包含两个NameNode，一个是Active状态，另一个额是Standby状态，在集群当中，DataNode不直接连向某NameNode，而是与NameService直接相连。（****注意：<property></property>与<configuration></configuration>之间以Tab缩进，<property></property>里面的属性也用Tab缩进，否则可能会有问题。
+```
+<configuration>
+     <!-- 指定hdfs的nameservice为ns1 -->
+       <property>                                          
+            <name>fs.defaultFS</name>
+            <value>hdfs://ns1</value>
+       </property>
+     <!-- 指定hadoop临时目录 -->
+       <property>
+            <name>hadoop.tmp.dir</name>
+            <value>/itcast/hadoop-2.2.0/tmp</value>
+       </property>
+     <!-- 指定zookeeper地址 -->
+       <property>
+            <name>ha.zookeeper.quorum</name>
+            <value>itcast04:2181,itcast05:2181,itcast06:2181</value>   
+       </property>
+    </configuration>
+```
+
 
 ## 分发已配置应用
 
