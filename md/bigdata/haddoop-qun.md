@@ -158,7 +158,8 @@ export PATH=$PATH:$JAVA_HOME/bin
 - 上传hadoop 安装包到 /alphastaApp
 - tar -zxvf hadoop-2.9.2.tar.gz -C /opt/modules/      解压到/opt/modules目录下
 - cd /opt/modules   ls                                切换到/opt/modules目录下查看是否解压成功
-
+- hadoop 暂不进行配置                                   后续章节统一配置集群
+ 
 
 ## 分发已配置应用
 
