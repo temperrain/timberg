@@ -114,7 +114,7 @@ ssh-copy-id alphasta06
 
 1. ***添加hadoop用户/用户组***
 ```
-groupadd -g 1000 hadoop                    指定用户组ID 1000 （系统用户组ID不低于500）
+groupadd -g 1000 hadoop                    指定用户组ID 1000 （系统用户组ID不低于500）如果ID已存在，就改为其它或去掉 -g 1000
 useradd -u 2000 -g hadoop hadoop           指定用户UID 2000 及所属的主组
 passwd hadoop                              指定用户密码
 ```
