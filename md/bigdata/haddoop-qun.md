@@ -133,8 +133,6 @@ vi /etc/sudoers             打开该配置文件，找到 root ALL=(ALL) ALL �
 ```
 mkdir /alphastaApp                           上传目录
 
-chown -R hadoop:hadoop /alphastaApp          将/alphastaApp 目录用户及用户组改为hadoop
-
 mkdir /opt/modules                           软件安装目录
 
 chown -R hadoop:hadoop /opt/modules          将该目录的用户组设定为 hadoop
