@@ -13,12 +13,12 @@ Linux系统 | CentOS 7
 
 主机名|IP |安装的软件|运行的进程
 -|:-|:-|:-
-alphasta01|192.168.16.91|JDK、hadoop|NameNode、DFSZKFailoverController
-alphasta02|192.168.16.92|JDK、hadoop|NameNode、DFSZKFailoverController
-alphasta03|192.168.16.93|JDK、hadoop|ResourceManager
-alphasta04|192.168.16.94|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
-alphasta05|192.168.16.95|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
-alphasta06|192.168.16.96|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
+alphasta01|192.168.16.181|JDK、hadoop|NameNode、DFSZKFailoverController
+alphasta02|192.168.16.182|JDK、hadoop|NameNode、DFSZKFailoverController
+alphasta03|192.168.16.183|JDK、hadoop|ResourceManager
+alphasta04|192.168.16.184|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
+alphasta05|192.168.16.185|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
+alphasta06|192.168.16.186|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
 
 ## 设置系统环境
 
@@ -56,12 +56,12 @@ hostnamectl set-hostname centos7           永久生效，需重启
 以root用户登录，在命令终端使用# vi /etc/hosts打开配置文件，根据集群规划添加如下内容，设置完成后，使用#ping alphasta01检测。
 
 ```   
-192.168.16.91     alphasta01
-192.168.16.92     alphasta02
-192.168.16.93     alphasta03
-192.168.16.94     alphasta04
-192.168.16.95     alphasta05 
-192.168.16.96     alphasta06 
+192.168.16.181     alphasta01
+192.168.16.182     alphasta02
+192.168.16.183     alphasta03
+192.168.16.184     alphasta04
+192.168.16.185     alphasta05 
+192.168.16.186     alphasta06 
 ```
 4. ***关闭防火墙和SELinux 需重启机器生效***
  
