@@ -445,14 +445,14 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 </configuration>
 
 
-第四个文件：yarn-site.xml
+第四个文件：yarn-site.xml（配置ResourceManager HA）
 
 
 <?xml version="1.0"?>
 
 <configuration>
 
- <!--开启resourcemanagerHA,默认为false（如果不做HA可不用配置）-->
+ <!--开启resourcemanagerHA,默认为false -->
 
  <property>
 
@@ -522,7 +522,7 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 
   <name>ha.zookeeper.quorum</name>
 
-  <value>c7003:2181,c7004:2181,c7005:2181</value>
+  <value>alphasta04:2181,alphasta05:2181,alphasta06:2181</value>
 
  </property>
 
@@ -532,7 +532,7 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 
   <name>yarn.resourcemanager.zk-state-store.address</name>
 
-  <value>c7003:2181,c7004:2181,c7005:2181</value>
+  <value>alphasta04:2181,alphasta05:2181,alphasta06:2181</value>
 
  </property>
 
@@ -550,7 +550,7 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 
   <name>yarn.resourcemanager.zk-address</name>
 
-  <value>c7003:2181,c7004:2181,c7005:2181</value>
+  <value>alphasta04:2181,alphasta05:2181,alphasta06:2181</value>
 
  </property>
 
@@ -576,6 +576,22 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 
 </configuration>
 
+
+yarn-site.xml（单点 ResourceManager）
+
+
+<configuration>
+            <!-- 指定resourcemanager地址 -->
+            <property>
+                    <name>yarn.resourcemanager.hostname</name>
+                    <value>alphasta03</value>
+            </property>
+            <!-- 指定nodemanager启动时加载server的方式为shuffle server -->
+            <property>
+                    <name>yarn.nodemanager.aux-services</name>
+                    <value>mapreduce_shuffle</value>
+            </property>
+</configuration>
 
 
 ## 分发已配置应用
