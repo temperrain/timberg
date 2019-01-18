@@ -174,7 +174,7 @@ export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin
 cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 
 
-core-site.xml
+第一个文件：core-site.xml
 
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -223,7 +223,7 @@ core-site.xml
 
 
 
-hdfs-site.xml 
+第二个文件：hdfs-site.xml 
 
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -403,6 +403,178 @@ hdfs-site.xml
 
 
 
+第三个文件：mapred-site.xml
+
+
+
+<?xml version="1.0"?>
+
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+
+<!-- 指定mr框架为yarn方式 -->
+ <property>
+
+  <name>mapreduce.framework.name</name>
+
+  <value>yarn</value>
+
+ </property>
+
+ <!-- 配置 MapReduce JobHistory Server 地址 ，默认端口10020 -->
+
+ <property>
+
+  <name>mapreduce.jobhistory.address</name>
+
+  <value>0.0.0.0:10020</value>
+
+ </property>
+
+ <!-- 配置 MapReduce JobHistory Server web ui 地址， 默认端口19888 -->
+
+ <property>
+
+  <name>mapreduce.jobhistory.webapp.address</name>
+
+  <value>0.0.0.0:19888</value>
+
+ </property>
+
+</configuration>
+
+
+第四个文件：yarn-site.xml
+
+
+<?xml version="1.0"?>
+
+<configuration>
+
+ <!--开启resourcemanagerHA,默认为false（如果不做HA可不用配置）-->
+
+ <property>
+
+  <name>yarn.resourcemanager.ha.enabled</name>
+
+  <value>true</value>
+
+ </property>
+
+ <!--开启自动恢复功能 -->
+
+ <property>
+
+  <name>yarn.resourcemanager.recovery.enabled</name>
+
+  <value>true</value>
+
+ </property>
+
+ <!-- 指定RM的cluster id -->
+
+ <property>
+
+  <name>yarn.resourcemanager.cluster-id</name>
+
+  <value>yrc</value>
+
+ </property>
+
+ <!--配置resourcemanager -->
+
+ <property>
+
+  <name>yarn.resourcemanager.ha.rm-ids</name>
+
+  <value>rm1,rm2</value>
+
+ </property>
+
+ <!-- 分别指定RM的地址 -->
+
+ <property>
+
+  <name>yarn.resourcemanager.hostname.rm1</name>
+
+  <value>alphasta03</value>
+
+ </property>
+
+ <property>
+
+  <name>yarn.resourcemanager.hostname.rm2</name>
+
+  <value>alphasta03</value>
+
+ </property>
+
+ <!-- <property> <name>yarn.resourcemanager.ha.id</name> <value>rm1</value> 
+
+  <description>If we want to launch more than one RM in single node,we need 
+
+  this configuration</description> </property> -->
+
+ <!-- 指定zk集群地址 -->
+
+ <property>
+
+  <name>ha.zookeeper.quorum</name>
+
+  <value>c7003:2181,c7004:2181,c7005:2181</value>
+
+ </property>
+
+ !--配置与zookeeper的连接地址-->
+
+ <property>
+
+  <name>yarn.resourcemanager.zk-state-store.address</name>
+
+  <value>c7003:2181,c7004:2181,c7005:2181</value>
+
+ </property>
+
+ <property>
+
+  <name>yarn.resourcemanager.store.class</name>
+
+  <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore
+
+  </value>
+
+ </property>
+
+ <property>
+
+  <name>yarn.resourcemanager.zk-address</name>
+
+  <value>c7003:2181,c7004:2181,c7005:2181</value>
+
+ </property>
+
+ <property>
+
+  <name>yarn.resourcemanager.ha.automatic-failover.zk-base-path</name>
+
+  <value>/yarn-leader-election</value>
+
+  <description>Optionalsetting.Thedefaultvalueis/yarn-leader-election
+
+  </description>
+
+ </property>
+
+ <property>
+
+  <name>yarn.nodemanager.aux-services</name>
+
+  <value>mapreduce_shuffle</value>
+
+ </property>
+
+</configuration>
 
 
 
