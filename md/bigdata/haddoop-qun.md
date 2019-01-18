@@ -169,38 +169,240 @@ export HADOOP_HOME=/opt/modules/hadoop-2.9.2
 export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin
 ```
 
-- 配置hadoop，共6个文件
+- 配置hadoop，共7个文件(core-site.xml、hdfs-site.xml、mapreduce-site.xml、yarn-site.xml、hadoop-env.sh、mapred-env.sh、yarn-env.sh)
 ```
 cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 
 
-第一个文件： hadoop.env.sh
-
-说明：修改Java的导出路径，如（export JAVA_HOME=/usr/java/jdk1.8.0_80）
-vi hadoop.env.sh 修改JAVA_HOEM的值     退出保存
+core-site.xml
 
 
-第二个文件： core-site.xml
+<?xml version="1.0" encoding="UTF-8"?>
 
-说明：第一个property配置的是nameservice，nameservice包含两个NameNode，一个是Active状态，另一个额是Standby状态，在集群当中，DataNode不直接连向某NameNode，而是与NameService直接相连。（****注意：<property></property>与<configuration></configuration>之间以Tab缩进，<property></property>里面的属性也用Tab缩进，否则可能会有问题。
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
 <configuration>
-     <!-- 指定hdfs的nameservice为ns1 -->
-       <property>                                          
-            <name>fs.defaultFS</name>
-            <value>hdfs://ns1</value>
-       </property>
-     <!-- 指定hadoop临时目录 -->
-       <property>
-            <name>hadoop.tmp.dir</name>
-            <value>/itcast/hadoop-2.2.0/tmp</value>
-       </property>
-     <!-- 指定zookeeper地址 -->
-       <property>
-            <name>ha.zookeeper.quorum</name>
-            <value>itcast04:2181,itcast05:2181,itcast06:2181</value>   
-       </property>
-    </configuration>
+
+ <property>
+
+  <name>fs.defaultFS</name>
+
+  <value>hdfs://alphasta</value>
+
+ </property>
+
+ <!-- 指定hadoop临时目录 需创建-->
+
+ <property>
+
+  <name>hadoop.tmp.dir</name>
+
+  <value>/opt/modules/hadoop-2.9.2/tmp</value>
+
+ </property>
+
+ <!-- 指定zookeeper地址 -->
+
+ <property>
+
+  <name>ha.zookeeper.quorum</name>
+
+  <value>alphasta04:2181,alphasta05:2181,alphasta06:2181</value>
+
+ </property>
+
+ <property>
+
+  <name>ha.zookeeper.session-timeout.ms</name>
+
+  <value>3000</value>
+
+ </property>
+
+</configuration>
+
+
+
+hdfs-site.xml 
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+
+ <!--指定hdfs的nameservice为bdcluster，需要和core-site.xml中的保持一致 -->
+
+ <property>
+
+  <name>dfs.nameservices</name>
+
+  <value>alphasta</value>
+
+ </property>
+
+ <!-- alphasta下面有两个NameNode，分别是nn1，nn2 -->
+
+ <property>
+
+  <name>dfs.ha.namenodes.alphasta</name>
+
+  <value>nn1,nn2</value>
+
+ </property>
+
+ <!-- nn1的RPC通信地址 -->
+
+ <property>
+
+  <name>dfs.namenode.rpc-address.alphasta.nn1</name>
+
+  <value>alphasta01:9000</value>
+
+ </property>
+
+ <!-- nn2的RPC通信地址 -->
+
+ <property>
+
+  <name>dfs.namenode.rpc-address.alphasta.nn2</name>
+
+  <value>alphasta02:9000</value>
+
+ </property>
+
+ <!-- nn1的http通信地址 -->
+
+ <property>
+
+  <name>dfs.namenode.http-address.alphasta.nn1</name>
+
+  <value>alphasta01:50070</value>
+
+ </property>
+
+ <!-- nn2的http通信地址 -->
+
+ <property>
+
+  <name>dfs.namenode.http-address.alphasta.nn2</name>
+
+  <value>alphasta02:50070</value>
+
+ </property>
+
+ <!-- 指定NameNode的元数据在JournalNode上的存放位置 -->
+
+ <property>
+
+  <name>dfs.namenode.shared.edits.dir</name>
+
+  <value>qjournal://alphasta04:8485;alphasta05:8485;alphasta06:8485/alphasta</value>
+
+ </property>
+
+ <!-- 指定JournalNode在本地磁盘存放数据的位置 -->
+
+ <property>
+
+  <name>dfs.journalnode.edits.dir</name>
+
+  <value>/opt/modules/hadoop-2.9.2/tmp/journal</value>
+
+ </property>
+
+<!-- 开启NameNode失败自动切换 -->
+ <property>
+
+  <name>dfs.ha.automatic-failover.enabled</name>
+
+  <value>true</value>
+
+ </property>
+
+ <!-- 配置失败自动切换实现方式 -->
+
+ <property>
+
+  <name>dfs.client.failover.proxy.provider.alphasta</name>
+
+  <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider
+
+  </value>
+
+ </property>
+
+ <!-- 配置隔离机制，多个机制用换行分割，即每个机制暂用一行 -->
+
+ <property>
+
+  <name>dfs.ha.fencing.methods</name>
+
+  <value>
+
+   sshfence
+
+   shell(/bin/true)
+
+  </value>
+
+ </property>
+
+ <!-- 使用sshfence隔离机制时需要ssh免密码登陆,需要配置私钥所在的路径，注意现在配置的是默认路径，如果路径有变化这里也要变化-->
+
+ <property>
+
+  <name>dfs.ha.fencing.ssh.private-key-files</name>
+
+  <value>/root/.ssh/id_rsa</value>
+
+ </property>
+
+ <!-- 配置sshfence隔离机制超时时间 -->
+
+ <property>
+
+  <name>dfs.ha.fencing.ssh.connect-timeout</name>
+
+  <value>30000</value>
+
+ </property>
+
+ <!--指定namenode名称空间的存储地址 -->
+
+ <property>
+
+  <name>dfs.namenode.name.dir</name>
+
+  <value>file:///opt/modules/hadoop-2.9.2/hdfs/name</value>
+
+ </property>
+
+ <!--指定datanode数据存储地址 -->
+
+ <property>
+
+  <name>dfs.datanode.data.dir</name>
+
+  <value>file:///opt/modules/hadoop-2.9.2/hdfs/data</value>
+
+ </property>
+
+ <!--指定数据冗余份数 -->
+
+ <property>
+
+  <name>dfs.replication</name>
+
+  <value>3</value>
+
+ </property>
+
+</configuration>
+
+
+
 
 
 
