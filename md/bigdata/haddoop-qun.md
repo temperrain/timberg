@@ -480,9 +480,23 @@ alphasta05
 alphasta06
 alphasta07
 
+分发已配置的应用
+
+分别将已配置好的hadoop文件 分发到alphasta01~alphasta07
+scp -r /opt/modules/hadoop-2.9.2 root@alphasta01:/opt/modules/
+scp -r /opt/modules/hadoop-2.9.2 root@alphasta02:/opt/modules/
+scp -r /opt/modules/hadoop-2.9.2 root@alphasta03:/opt/modules/
+scp -r /opt/modules/hadoop-2.9.2 root@alphasta04:/opt/modules/
+scp -r /opt/modules/hadoop-2.9.2 root@alphasta05:/opt/modules/
+scp -r /opt/modules/hadoop-2.9.2 root@alphasta06:/opt/modules/
+scp -r /opt/modules/hadoop-2.9.2 root@alphasta07:/opt/modules/
+
+
+至此，hadoop的配置文件已经全部配置完毕
 ```
 
-## 分发已配置应用
+## 启动hadoop集群
+
 
 
 
