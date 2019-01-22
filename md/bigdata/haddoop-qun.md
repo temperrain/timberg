@@ -177,7 +177,7 @@ scp -r /etc/profile root@alphasta07:/etc/
 vi /etc/profile                      shift + G 跳转到文件末尾，添加如下内容
 
 export HADOOP_HOME=/opt/modules/hadoop-2.9.2
-export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/bin
 ```
 
 - 配置hadoop，共7个文件(core-site.xml、hdfs-site.xml、mapreduce-site.xml、yarn-site.xml、hadoop-env.sh、mapred-env.sh、yarn-env.sh)
