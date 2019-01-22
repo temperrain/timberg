@@ -406,7 +406,7 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
   <value>alphasta05:2181,alphasta06:2181,alphasta07:2181</value>
  </property>
 
- !--配置与zookeeper的连接地址-->
+ <!--配置与zookeeper的连接地址-->
  <property>
   <name>yarn.resourcemanager.zk-state-store.address</name>
   <value>alphasta05:2181,alphasta06:2181,alphasta07:2181</value>
