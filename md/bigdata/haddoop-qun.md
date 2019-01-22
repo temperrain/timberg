@@ -160,9 +160,9 @@ export PATH=$PATH:$JAVA_HOME/bin
 
 如果profile文件已经配置，各个机器不一样，就选择各自配置profile即可
 
-scp -r /usr/lib/jdk-8u191-linux-x64 root@alphasta01:/usr/lib/
+scp -r /usr/lib/jdk1.8.0_191 root@alphasta07:/usr/lib/
 
-scp -r /etc/profile root@alphasta01:/etc/
+scp -r /etc/profile root@alphasta07:/etc/
 
 5. ***安装和配置 hadoop***
 
