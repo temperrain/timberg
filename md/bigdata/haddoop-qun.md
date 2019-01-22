@@ -207,7 +207,7 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
  <!-- 指定zookeeper地址 -->
  <property>
   <name>ha.zookeeper.quorum</name>
-  <value>alphasta04:2181,alphasta05:2181,alphasta06:2181</value>
+  <value>alphasta05:2181,alphasta06:2181,alphasta07:2181</value>
  </property>
 
  <property>
@@ -264,7 +264,7 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
  <!-- 指定NameNode的元数据在JournalNode上的存放位置 -->
  <property>
   <name>dfs.namenode.shared.edits.dir</name>
-  <value>qjournal://alphasta04:8485;alphasta05:8485;alphasta06:8485/alphasta</value>
+  <value>qjournal://alphasta05:8485;alphasta06:8485;alphasta07:8485/alphasta</value>
  </property>
 
  <!-- 指定JournalNode在本地磁盘存放数据的位置 -->
@@ -403,13 +403,13 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
  <!-- 指定zk集群地址 -->
  <property>
   <name>ha.zookeeper.quorum</name>
-  <value>alphasta04:2181,alphasta05:2181,alphasta06:2181</value>
+  <value>alphasta05:2181,alphasta06:2181,alphasta07:2181</value>
  </property>
 
  !--配置与zookeeper的连接地址-->
  <property>
   <name>yarn.resourcemanager.zk-state-store.address</name>
-  <value>alphasta04:2181,alphasta05:2181,alphasta06:2181</value>
+  <value>alphasta05:2181,alphasta06:2181,alphasta07:2181</value>
  </property>
 
  <property>
@@ -420,7 +420,7 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 
  <property>
   <name>yarn.resourcemanager.zk-address</name>
-  <value>alphasta04:2181,alphasta05:2181,alphasta06:2181</value>
+  <value>alphasta05:2181,alphasta06:2181,alphasta07:2181</value>
  </property>
 
  <property>
