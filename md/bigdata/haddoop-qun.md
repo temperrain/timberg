@@ -163,6 +163,8 @@ export PATH=$PATH:$JAVA_HOME/bin
 scp -r /usr/lib/jdk1.8.0_191 root@alphasta07:/usr/lib/
 
 scp -r /etc/profile root@alphasta07:/etc/
+分发到新节点后，记得使配置文件生效 
+
 
 5. ***安装和配置 hadoop***
 
