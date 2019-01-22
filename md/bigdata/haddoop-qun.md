@@ -456,21 +456,22 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 
 hadoop-env.sh & mapred-env.sh & yarn-env.sh 配置hadoop守护进程的运行环境
 
-export JAVA_HOME=/opt/jdk1.8.0_121
-export CLASS_PATH=$JAVA_HOME/lib:$JAVA_HOME/jre/lib 
-export HADOOP_HOME=/opt/hadoop-2.8.0
-export HADOOP_PID_DIR=/opt/hadoop-2.8.0/pids 
-export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native 
-export HADOOP_OPTS="$HADOOP_OPTS-Djava.library.path=$HADOOP_HOME/lib/native" 
-export HADOOP_PREFIX=$HADOOP_HOME 
-export HADOOP_MAPRED_HOME=$HADOOP_HOME 
-export HADOOP_COMMON_HOME=$HADOOP_HOME 
-export HADOOP_HDFS_HOME=$HADOOP_HOME 
-export YARN_HOME=$HADOOP_HOME 
-export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop 
-export HDFS_CONF_DIR=$HADOOP_HOME/etc/hadoop 
-export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop 
-export JAVA_LIBRARY_PATH=$HADOOP_HOME/lib/native 
+export JAVA_HOME=/usr/lib/jdk1.8.0_191
+export CLASS_PATH=$JAVA_HOME/lib:$JAVA_HOME/jre/lib
+
+export HADOOP_HOME=/opt/modules/hadoop-2.9.2
+export HADOOP_PID_DIR=/opt/modules/hadoop-2.9.2/pids
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export HADOOP_OPTS="$HADOOP_OPTS-Djava.library.path=$HADOOP_HOME/lib/native"
+export HADOOP_PREFIX=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export HDFS_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export JAVA_LIBRARY_PATH=$HADOOP_HOME/lib/native
 export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 
 
