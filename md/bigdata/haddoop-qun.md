@@ -497,6 +497,63 @@ scp -r /opt/modules/hadoop-2.9.2 root@alphasta07:/opt/modules/
 
 ## 启动hadoop集群
 
+1. 启动zookeeper集群
+
+分别在alphasta05、alphasta06、alphasta07上执行如下命令启动zookeeper集群；
+[root@alphasta05 zookeeper-3.4.13/bin]$ sh zkServer.sh start
+
+验证zookeeper集群是否启动成功，有两个follower节点跟一个leader节点
+[root@alphasta05 zookeeper-3.4.13/bin]$ sh zkServer.sh status
+
+2. 启动journalnode集群
+
+根据集群规划，只有在alphasta05，alphasta06，alphasta07上运行JournalNode；
+
+注意：在sbin目录下，有hadoop-daemon.sh和hadoop-daemons.sh命令，第一条是单独启动某台设备的某个进程，第二条是启动所有设备的某个进程；
+
+故命令如下：
+[root@alphasta05 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start journalnode
+
+运行jps，查看JournalNode进程
+
+3. 格式化zkfc,让在zookeeper中生成ha节点
+
+在alphasta01上执行如下命令（命令行下执行即可），完成格式化，
+hdfs zkfc -formatZK
+
+格式成功后，查看zookeeper中可以看到
+[zk: localhost:2181(CONNECTED) 1] ls /hadoop-ha
+[alphasta]
+
+4. 格式化hdfs
+
+在alphasta01上执行命令: hdfs namenode -format，看到类似tmp/dfs/name has been successfully formatted描述信息时说明格式化成功
+
+5. 启动NameNode
 
 
+首先在alphasta01上启动active节点
+[root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start namenode
 
+在alphasta01上同步namenode的数据，同时启动standby的namenod,命令如下
+#把NameNode的数据同步到c7002上
+[root@alphasta01 hadoop-2.9.2]$ bin/hdfs namenode -bootstrapStandby
+#启动alphasta02 上的namenode作为standby
+[root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start namenode
+
+6. 第六步：启动datanode
+
+在alphasta01 上执行如下命令
+[root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemons.sh start datanode
+
+7. 启动yarn
+
+在作为资源管理器上的机器alphasta03上启动， ,执行如下命令完成yarn的启动
+[root@alphasta01 hadoop-2.9.2]$ sbin/start-yarn.sh
+
+8. 启动zkfc
+
+在alphasta01 上执行如下命令，完成ZKFC的启动
+[root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemons.sh start zkfc
+
+全部启动后，查看进程
