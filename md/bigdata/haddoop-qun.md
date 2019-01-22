@@ -13,12 +13,13 @@ Linux系统 | CentOS 7
 
 主机名|IP |安装的软件|运行的进程
 -|:-|:-|:-
-alphasta01|192.168.16.181|JDK、hadoop|NameNode、DFSZKFailoverController
-alphasta02|192.168.16.182|JDK、hadoop|NameNode、DFSZKFailoverController
-alphasta03|192.168.16.183|JDK、hadoop|ResourceManager
-alphasta04|192.168.16.184|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
-alphasta05|192.168.16.185|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
-alphasta06|192.168.16.186|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
+alphasta01|192.168.23.181|JDK、hadoop|NameNode、DFSZKFailoverController
+alphasta02|192.168.23.182|JDK、hadoop|NameNode、DFSZKFailoverController
+alphasta03|192.168.23.183|JDK、hadoop|ResourceManager
+alphasta04|192.168.23.184|JDK、hadoop|ResourceManager
+alphasta05|192.168.23.185|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
+alphasta06|192.168.23.186|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
+alphasta07|192.168.23.187|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
 
 ## 设置系统环境
 
@@ -45,7 +46,7 @@ hostnamectl set-hostname centos7           永久生效，需重启
  UUID="b6591044-1086-4cc4-af48-876b26c0e739"
  DEVICE="enp0s3"                                  对应第一张网卡
  ONBOOT="yes"                                     是否启动运行
- IPADDR=192.168.16.59                             指定本机IP地址
+ IPADDR=192.168.23.181                            指定本机IP地址
  GATEWAY=192.168.16.1                             指定网关
  NETMASK=255.255.255.0                            
  DNS1=222.222.222.222                             DNS地址，配置后同步到 /etc/resolv.conf
@@ -56,12 +57,13 @@ hostnamectl set-hostname centos7           永久生效，需重启
 以root用户登录，在命令终端使用# vi /etc/hosts打开配置文件，根据集群规划添加如下内容，设置完成后，使用#ping alphasta01检测。
 
 ```   
-192.168.16.181     alphasta01
-192.168.16.182     alphasta02
-192.168.16.183     alphasta03
-192.168.16.184     alphasta04
-192.168.16.185     alphasta05 
-192.168.16.186     alphasta06 
+192.168.23.181     alphasta01
+192.168.23.182     alphasta02
+192.168.23.183     alphasta03
+192.168.23.184     alphasta04
+192.168.23.185     alphasta05 
+192.168.23.186     alphasta06
+192.168.23.187     alphasta07
 ```
 4. ***关闭防火墙和SELinux 需重启机器生效***
  
@@ -103,6 +105,7 @@ ssh-copy-id alphasta03
 ssh-copy-id alphasta04
 ssh-copy-id alphasta05
 ssh-copy-id alphasta06
+ssh-copy-id alphasta07
 ```
 - 验证是否免密成功 ssh alphasta01 
 
@@ -232,7 +235,7 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 
 <configuration>
 
- <!--指定hdfs的nameservice为bdcluster，需要和core-site.xml中的保持一致 -->
+ <!--指定hdfs的nameservice为alphasta，需要和core-site.xml中的保持一致 -->
 
  <property>
 
@@ -406,7 +409,6 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 第三个文件：mapred-site.xml
 
 
-
 <?xml version="1.0"?>
 
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
@@ -506,7 +508,7 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 
   <name>yarn.resourcemanager.hostname.rm2</name>
 
-  <value>alphasta03</value>
+  <value>alphasta04</value>
 
  </property>
 
