@@ -511,6 +511,11 @@ scp -r /etc/profile root@alphasta07:/etc/profile
 至此，hadoop的配置文件已经全部配置完毕
 ```
 
+6. ***安装和配置 zookeeper集群***
+
+
+
+
 ## 启动hadoop集群
 
 1. 启动zookeeper集群
