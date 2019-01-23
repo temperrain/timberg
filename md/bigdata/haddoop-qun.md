@@ -496,6 +496,16 @@ scp -r /opt/modules/hadoop-2.9.2 root@alphasta06:/opt/modules/
 scp -r /opt/modules/hadoop-2.9.2 root@alphasta07:/opt/modules/
 
 
+scp -r /etc/profile root@alphasta01:/etc/profile
+scp -r /etc/profile root@alphasta02:/etc/profile
+scp -r /etc/profile root@alphasta03:/etc/profile
+scp -r /etc/profile root@alphasta04:/etc/profile
+scp -r /etc/profile root@alphasta05:/etc/profile
+scp -r /etc/profile root@alphasta06:/etc/profile
+scp -r /etc/profile root@alphasta07:/etc/profile
+
+最后记得使生效   source /etc/profile
+
 至此，hadoop的配置文件已经全部配置完毕
 ```
 
