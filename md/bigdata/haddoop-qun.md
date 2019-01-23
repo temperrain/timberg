@@ -645,11 +645,11 @@ hdfs zkfc -formatZK
 
 在alphasta01上同步namenode的数据，同时启动standby的namenod,命令如下
 #把NameNode的数据同步到c7002上
-> [root@alphasta01 hadoop-2.9.2]$ bin/hdfs namenode -bootstrapStandby
+> [root@alphasta02 hadoop-2.9.2]$ bin/hdfs namenode -bootstrapStandby
 
 
 #启动alphasta02 上的namenode作为standby
-> [root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start namenode
+> [root@alphasta02 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start namenode
 
 6. 第六步：启动datanode
 
