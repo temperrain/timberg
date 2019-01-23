@@ -625,8 +625,14 @@ Mode: follower
 hdfs zkfc -formatZK
 
 格式成功后，查看zookeeper中可以看到
-[zk: localhost:2181(CONNECTED) 1] ls /hadoop-ha
-[alphasta]
+> [root@alphasta05 bin]# sh zkCli.sh -server alphasta05:2181
+
+可以看到
+```
+[zk: alphasta05:2181(CONNECTED) 2] ls /
+[zookeeper, hadoop-ha]
+[zk: alphasta05:2181(CONNECTED) 3]
+```
 
 4. 格式化hdfs
 
