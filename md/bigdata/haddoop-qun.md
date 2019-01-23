@@ -602,11 +602,11 @@ Mode: follower
 
 1. 启动zookeeper集群
 
-分别在alphasta05、alphasta06、alphasta07上执行如下命令启动zookeeper集群；
-[root@alphasta05 zookeeper-3.4.13/bin]$ sh zkServer.sh start
+分别在alphasta05、alphasta06、alphasta07上执行如下命令启动zookeeper集群
+> [root@alphasta05 zookeeper-3.4.13/bin]$ sh zkServer.sh start
 
 验证zookeeper集群是否启动成功，有两个follower节点跟一个leader节点
-[root@alphasta05 zookeeper-3.4.13/bin]$ sh zkServer.sh status
+> [root@alphasta05 zookeeper-3.4.13/bin]$ sh zkServer.sh status
 
 2. 启动journalnode集群
 
