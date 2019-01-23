@@ -506,7 +506,7 @@ scp -r /etc/profile root@alphasta07:/etc/profile
 ```
 6. ***安装和配置 zookeeper集群***
 
-- 解压zookeeper
+- 1.解压zookeeper
 
 将下载好的zookeeper-3.4.13.tar.gz压缩包，上传到 /alphastaApp目录,并解压
 > [root@alphasta01 alphastaApp]$ tar -zxvf zookeeper-3.4.13.tar.gz -C /opt/modules
@@ -516,10 +516,10 @@ scp -r /etc/profile root@alphasta07:/etc/profile
 > [root@alphasta05 zookeeper-3.4.13]$cd /opt/modules/    ls  
 
 > [root@alphasta05 zookeeper-3.4.13]$ chmod +wxr zookeeper-3.4.13
-- 修改zookeeper的配置文件，并建立数据目录和日志目录
+- 2.修改zookeeper的配置文件，并建立数据目录和日志目录
 
 
-> [root@alphasta05 modules]$ cd zookeeper-3.4.10
+> [root@alphasta05 modules]$ cd zookeeper-3.4.13
 
 > [root@alphasta05 zookeeper-3.4.13]$ mkdir data
 
@@ -559,6 +559,42 @@ clientPort=2181
 # Purge task interval in hours
 # Set to "0" to disable auto purge feature
 #autopurge.purgeInterval=1
+```
+
+[root@alphasta05 zookeeper-3.4.13]$ cd data 
+[root@alphasta05 data]$ vi myid     添加内容    1
+
+- 3.复制alphasta05 的zookeeper-3.4.13到alphasta06 和alphasta07 上
+
+> [root@alphasta05 opt]$ scp zookeeper-3.4.13 root@alphasta06:/opt/modules/
+
+> [root@alphasta05 opt]$ scp zookeeper-3.4.13 root@alphasta07:/opt/modules/
+
+- 4.分别修改alphasta06 和alphasta07 上myid的值为2和3
+> [root@alphasta06 zookeeper-3.4.13]$ vi data/myid        2
+
+> [root@alphasta07 zookeeper-3.4.13]$ vi data/myid        3
+
+- 5.分别启动alphasta05 、alphasta06 、alphasta07 上的zookeeper
+
+[root@alphasta05 zookeeper-3.4.13]$ bin/sh zkServer.sh start
+[root@alphasta06 zookeeper-3.4.13]$ bin/sh zkServer.sh start
+[root@alphasta07 zookeeper-3.4.13]$ bin/sh zkServer.sh start
+
+- 6.查看zookeeper的状态
+```
+[root@alphasta05 zookeeper-3.4.13]$ bin/ sh zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /opt/modules/zookeeper-3.4.13/bin/../conf/zoo.cfg
+Mode: follower
+[root@alphasta06 zookeeper-3.4.13]$ bin/ sh zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /opt/modules/zookeeper-3.4.10/bin/../conf/zoo.cfg
+Mode: leader
+[root@alphasta07 zookeeper-3.4.13]$ bin/sh zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /opt/modules/zookeeper-3.4.10/bin/../conf/zoo.cfg
+Mode: follower
 ```
 
 
