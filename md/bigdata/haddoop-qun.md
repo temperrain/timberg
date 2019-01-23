@@ -327,7 +327,6 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 
 </configuration>
 
-
 第三个文件：mapred-site.xml
 
 <?xml version="1.0"?>
@@ -354,9 +353,7 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
 
 </configuration>
 
-
 第四个文件：yarn-site.xml（配置ResourceManager HA）
-
 
 <?xml version="1.0"?>
 <configuration>
@@ -436,9 +433,7 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
  </property>
 </configuration>
 
-
 第四个文件：yarn-site.xml（单点 ResourceManager）
-
 
 <configuration>
             <!-- 指定resourcemanager地址 -->
@@ -452,7 +447,6 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
                     <value>mapreduce_shuffle</value>
             </property>
 </configuration>
-
 
 hadoop-env.sh & mapred-env.sh & yarn-env.sh 配置hadoop守护进程的运行环境
 
@@ -486,7 +480,7 @@ alphasta07
 
 分发已配置的应用
 
-分别将已配置好的hadoop文件 分发到alphasta01~alphasta07
+分别将已配置好的hadoop文件 分发到 alphasta01 ~ alphasta07
 scp -r /opt/modules/hadoop-2.9.2 root@alphasta01:/opt/modules/
 scp -r /opt/modules/hadoop-2.9.2 root@alphasta02:/opt/modules/
 scp -r /opt/modules/hadoop-2.9.2 root@alphasta03:/opt/modules/
@@ -510,10 +504,62 @@ scp -r /etc/profile root@alphasta07:/etc/profile
 
 至此，hadoop的配置文件已经全部配置完毕
 ```
-
 6. ***安装和配置 zookeeper集群***
 
+- 解压zookeeper
 
+将下载好的zookeeper-3.4.13.tar.gz压缩包，上传到 /alphastaApp目录,并解压
+> [root@alphasta01 alphastaApp]$ tar -zxvf zookeeper-3.4.13.tar.gz -C /opt/modules
+
+
+验证是否成功
+> [root@alphasta05 zookeeper-3.4.13]$cd /opt/modules/    ls  
+
+> [root@alphasta05 zookeeper-3.4.13]$ chmod +wxr zookeeper-3.4.13
+- 修改zookeeper的配置文件，并建立数据目录和日志目录
+
+
+> [root@alphasta05 modules]$ cd zookeeper-3.4.10
+
+> [root@alphasta05 zookeeper-3.4.13]$ mkdir data
+
+> [root@alphasta05 zookeeper-3.4.13]$ mkdir logs
+
+> [root@alphasta05 zookeeper-3.4.13]$ vi conf/zoo.cfg
+```
+# The number of milliseconds of each tick
+tickTime=2000
+# The number of ticks that the initial 
+# synchronization phase can take
+initLimit=10
+# The number of ticks that can pass between 
+# sending a request and getting an acknowledgement
+syncLimit=5
+# the directory where the snapshot is stored.
+# do not use /tmp for storage, /tmp here is just 
+# example sakes.
+dataDir=/opt/modules/zookeeper-3.4.13/data
+dataLogDir=/opt/modules/zookeeper-3.4.13/logs
+server.1=alphasta05:2888:3888
+server.2=alphasta06:2888:3888
+server.3=alphasta07:2888:3888
+# the port at which the clients will connect
+clientPort=2181
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+#maxClientCnxns=60
+#
+# Be sure to read the maintenance section of the 
+# administrator guide before turning on autopurge.
+#
+# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
+#
+# The number of snapshots to retain in dataDir
+#autopurge.snapRetainCount=3
+# Purge task interval in hours
+# Set to "0" to disable auto purge feature
+#autopurge.purgeInterval=1
+```
 
 
 ## 启动hadoop集群
@@ -552,7 +598,6 @@ hdfs zkfc -formatZK
 
 5. 启动NameNode
 
-
 首先在alphasta01上启动active节点
 [root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start namenode
 
@@ -575,6 +620,7 @@ hdfs zkfc -formatZK
 8. 启动zkfc
 
 在alphasta01 上执行如下命令，完成ZKFC的启动
-[root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemons.sh start zkfc
+[root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemons.sh start zkfc  
+
 
 全部启动后，查看进程
