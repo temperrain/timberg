@@ -566,9 +566,9 @@ clientPort=2181
 
 - 3.复制alphasta05 的zookeeper-3.4.13到alphasta06 和alphasta07 上
 
-> [root@alphasta05 opt]$ scp zookeeper-3.4.13 root@alphasta06:/opt/modules/
+> [root@alphasta05 opt]$ scp -r zookeeper-3.4.13 root@alphasta06:/opt/modules/
 
-> [root@alphasta05 opt]$ scp zookeeper-3.4.13 root@alphasta07:/opt/modules/
+> [root@alphasta05 opt]$ scp -r zookeeper-3.4.13 root@alphasta07:/opt/modules/
 
 - 4.分别修改alphasta06 和alphasta07 上myid的值为2和3
 > [root@alphasta06 zookeeper-3.4.13]$ vi data/myid        2
