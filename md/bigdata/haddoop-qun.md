@@ -495,6 +495,7 @@ scp -r /opt/modules/hadoop-2.9.2 root@alphasta05:/opt/modules/
 scp -r /opt/modules/hadoop-2.9.2 root@alphasta06:/opt/modules/
 scp -r /opt/modules/hadoop-2.9.2 root@alphasta07:/opt/modules/
 
+传输完后到对应的目录查看是否有相应的hadoop-2.9.2目录
 
 scp -r /etc/profile root@alphasta01:/etc/profile
 scp -r /etc/profile root@alphasta02:/etc/profile
@@ -505,6 +506,7 @@ scp -r /etc/profile root@alphasta06:/etc/profile
 scp -r /etc/profile root@alphasta07:/etc/profile
 
 最后记得使生效   source /etc/profile
+验证是否传输成功及生效 可使用 echo $HADOOP_HOME验证
 
 至此，hadoop的配置文件已经全部配置完毕
 ```
