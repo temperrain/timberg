@@ -291,7 +291,6 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
   <name>dfs.ha.fencing.methods</name>
   <value>
    sshfence
-   shell(/bin/true)
   </value>
  </property>
 
