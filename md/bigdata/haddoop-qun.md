@@ -240,13 +240,13 @@ cd $HADOOP_HOME/etc/hadoop           切换到hadoop 配置文件目录
  <!-- nn1的RPC通信地址 -->
  <property>
   <name>dfs.namenode.rpc-address.alphasta.nn1</name>
-  <value>alphasta01:9000</value>
+  <value>alphasta01:8020</value>
  </property>
 
  <!-- nn2的RPC通信地址 -->
  <property>
   <name>dfs.namenode.rpc-address.alphasta.nn2</name>
-  <value>alphasta02:9000</value>
+  <value>alphasta02:8020</value>
  </property>
 
  <!-- nn1的http通信地址 -->
