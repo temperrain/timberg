@@ -553,7 +553,6 @@ scp -r /etc/profile root@alphasta07:/etc/profile
 
 - 2.修改zookeeper的配置文件，并建立数据目录和日志目录
 
-
 > [root@alphasta05 modules]$ cd zookeeper-3.4.13
 
 > [root@alphasta05 zookeeper-3.4.13]$ mkdir data
@@ -596,8 +595,9 @@ clientPort=2181
 #autopurge.purgeInterval=1
 ```
 
-[root@alphasta05 zookeeper-3.4.13]$ cd data 
-[root@alphasta05 data]$ vi myid     添加内容    1
+> [root@alphasta05 zookeeper-3.4.13]$ cd data 
+
+> [root@alphasta05 data]$ vi myid     添加内容    1
 
 - 3.复制alphasta05 的zookeeper-3.4.13到alphasta06 和alphasta07 上
 
@@ -612,9 +612,11 @@ clientPort=2181
 
 - 5.分别启动alphasta05 、alphasta06 、alphasta07 上的zookeeper
 
-[root@alphasta05 zookeeper-3.4.13]$ bin/sh zkServer.sh start
-[root@alphasta06 zookeeper-3.4.13]$ bin/sh zkServer.sh start
-[root@alphasta07 zookeeper-3.4.13]$ bin/sh zkServer.sh start
+> [root@alphasta05 zookeeper-3.4.13]$ bin/sh zkServer.sh start
+
+> [root@alphasta06 zookeeper-3.4.13]$ bin/sh zkServer.sh start
+
+> [root@alphasta07 zookeeper-3.4.13]$ bin/sh zkServer.sh start
 
 - 6.查看zookeeper的状态
 ```
@@ -632,75 +634,82 @@ Using config: /opt/modules/zookeeper-3.4.10/bin/../conf/zoo.cfg
 Mode: follower
 ```
 
-
 ## 启动hadoop集群
 
-1. 启动zookeeper集群
+1. #### 启动zookeeper集群
+    - 分别在alphasta05、alphasta06、alphasta07上执行如下命令启动zookeeper集群
 
-分别在alphasta05、alphasta06、alphasta07上执行如下命令启动zookeeper集群
 > [root@alphasta05 zookeeper-3.4.13/bin]$ sh zkServer.sh start
 
-验证zookeeper集群是否启动成功，有两个follower节点跟一个leader节点
+- 验证zookeeper集群是否启动成功，有两个follower节点跟一个leader节点
+
 > [root@alphasta05 zookeeper-3.4.13/bin]$ sh zkServer.sh status
 
-2. 启动journalnode集群
+2. #### 启动journalnode集群
 
-根据集群规划，只有在alphasta05，alphasta06，alphasta07上运行JournalNode；
+> 根据集群规划，运行节点有 alphasta05，alphasta06，alphasta07
 
-注意：在sbin目录下，有hadoop-daemon.sh和hadoop-daemons.sh命令，第一条是单独启动某台设备的某个进程，第二条是启动所有设备的某个进程；
+> sbin目录下，有 hadoop-daemon.sh(单独启动某台设备的某个进程)和 hadoop-daemons.sh(启动所有设备的某个进程)
 
-故命令如下：
-[root@alphasta05 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start journalnode
+> [root@alphasta05 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start journalnode
 
-运行jps，查看JournalNode进程
+> 执行jps，查看JournalNode进程
 
-3. 格式化zkfc,让在zookeeper中生成ha节点
+3. #### 格式化zkfc,在zookeeper中生成ha节点
 
-在alphasta01上执行如下命令（命令行下执行即可），完成格式化，
-hdfs zkfc -formatZK
+> 节点 alphasta01
 
-格式成功后，查看zookeeper中可以看到
-> [root@alphasta05 bin]# sh zkCli.sh -server alphasta05:2181
+> 命令 hdfs zkfc -formatZK 完成格式化
 
-可以看到
+> 格式化成功后，查看zookeeper [root@alphasta05 bin]# sh zkCli.sh -server alphasta05:2181
+
 ```
 [zk: alphasta05:2181(CONNECTED) 2] ls /
 [zookeeper, hadoop-ha]
 [zk: alphasta05:2181(CONNECTED) 3]
 ```
 
-4. 格式化hdfs
+4. #### 格式化hdfs
 
-在alphasta01上执行命令: hdfs namenode -format，看到类似tmp/dfs/name has been successfully formatted描述信息时说明格式化成功
+> 节点 alphasta01
 
-5. 启动NameNode
+> 命令 hdfs namenode -format
 
-首先在alphasta01上启动active节点
+> 看到类似tmp/dfs/name has been successfully formatted描述信息时说明格式化成功
+
+5. #### 启动NameNode
+
+> 节点 alphasta01 上启动active节点
+
 > [root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start namenode
 
-在alphasta02上同步namenode的数据，同时启动standby的namenod,命令如下
-#把NameNode的数据同步到c7002上
-> [root@alphasta02 hadoop-2.9.2]$ bin/hdfs namenode -bootstrapStandby
+> 节点 alphasta02 同步namenode的数据，同时启动standby的namenode
 
+> [root@alphasta02 hadoop-2.9.2]$ bin/hdfs namenode -bootstrapStandby 
 
-#启动alphasta02 上的namenode作为standby
-> [root@alphasta02 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start namenode
+> [root@alphasta02 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start namenode     
 
-6. 第六步：启动datanode
+6. #### 启动datanode
 
-根据集群规划在alphasta05 alphasta06 alphasta07 上分别执行如下命令（这里选择单独启动，选择全部启动也只有一个节点启动，待研究）
-[root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start datanode
+> 集群规划 alphasta05 alphasta06 alphasta07 上运行 datanode
 
-7. 启动yarn
+> [root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start datanode
 
-在作为资源管理器上的机器alphasta03上启动， ,执行如下命令完成yarn的启动（同样只有一个节点启动了，故需要在alphasta04上也执行以下命令）
-[root@alphasta01 hadoop-2.9.2]$ sbin/start-yarn.sh
+> 这里选择单独启动，测试中选择全部启动时，结果也只有一个节点启动，至于原因待研究
 
-8. 启动zkfc
+7. #### 启动yarn
 
-在alphasta01 上执行如下命令，完成ZKFC的启动
-[root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemons.sh start zkfc  
+> 运行节点 alphasta03
 
+> [root@alphasta01 hadoop-2.9.2]$ sbin/start-yarn.sh
+
+> 启动之后，只有本节点运行了，故还需要在 alphasta04 上执行此命令 （至于原因，待研究）
+
+8. #### 启动zkfc
+
+> 运行节点 alphasta01 
+
+> [root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemons.sh start zkfc
 
 ### 全部启动后，查看进程
 
