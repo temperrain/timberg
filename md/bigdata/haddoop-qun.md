@@ -653,12 +653,12 @@ hdfs zkfc -formatZK
 
 6. 第六步：启动datanode
 
-在alphasta01 上执行如下命令
-[root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemons.sh start datanode
+根据集群规划在alphasta05 alphasta06 alphasta07 上分别执行如下命令（这里选择单独启动，选择全部启动也只有一个节点启动，待研究）
+[root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start datanode
 
 7. 启动yarn
 
-在作为资源管理器上的机器alphasta03上启动， ,执行如下命令完成yarn的启动
+在作为资源管理器上的机器alphasta03上启动， ,执行如下命令完成yarn的启动（同样只有一个节点启动了，故需要在alphasta04上也执行以下命令）
 [root@alphasta01 hadoop-2.9.2]$ sbin/start-yarn.sh
 
 8. 启动zkfc
@@ -667,4 +667,12 @@ hdfs zkfc -formatZK
 [root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemons.sh start zkfc  
 
 
-全部启动后，查看进程
+### 全部启动后，查看进程
+
+- 每个节点的进程都跟规划中的一致，除了alphasta03（多了一个nodemanager，待研究）不影响使用
+
+- 验证namenode HA 
+    - 分别登录nn1 nn2 管理控制台 http://192.168.23.181:50070 http://192.168.23.182:50070 查看其状态，然后关掉active状态的节点，查看另一个节点是否有standby 改为active
+
+- 验证ResourceManager HA 
+    - 使用该命令 yarn rmadmin -getServiceState rm1  可查看rm1的状态 yarn rmadmin -getServiceState rm2 查看rm2的状态，同样 关掉一个看另一个的状态的变化
