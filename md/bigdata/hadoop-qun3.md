@@ -196,7 +196,7 @@ export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/bin
 
         <property>
                 <name>fs.defaultFS</name>
-                <value>hdfs://master:9000</value>
+                <value>hdfs://master:8020</value>
         </property>
 
         <!-- 指定hadoop临时目录 需创建-->
@@ -357,6 +357,12 @@ scp -r /etc/profile root@slave2:/etc/profile
 > 运行节点 master
 
 > [root@master hadoop-2.9.2]$ sbin/start-yarn.sh
+
+4. #### 查看集群状态
+
+> [root@master hadoop-2.9.2]$ bin/hdfs dfsadmin -report
+
+> 也可以使用web控制台查看HDFS集群信息，在浏览器打开http://master:50070/（如果是windows客户机，就将master改为IP地址）
 
 ### 全部启动后，查看进程
 
