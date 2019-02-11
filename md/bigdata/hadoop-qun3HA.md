@@ -1,4 +1,4 @@
-# hadoop 高可用分布式集群搭建
+# hadoop 高可用分布式集群搭建-3节点
 
 ## 基础环境
 
@@ -13,13 +13,13 @@ Linux系统 | CentOS 7
 
 主机名|IP |安装的软件|运行的进程
 -|:-|:-|:-
-alphasta01|192.168.23.181|JDK、hadoop|NameNode、DFSZKFailoverController
-alphasta02|192.168.23.182|JDK、hadoop|NameNode、DFSZKFailoverController
-alphasta03|192.168.23.183|JDK、hadoop|ResourceManager
-alphasta04|192.168.23.184|JDK、hadoop|ResourceManager
-alphasta05|192.168.23.185|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
-alphasta06|192.168.23.186|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
-alphasta07|192.168.23.187|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
+alphasta01|192.168.23.191|JDK、hadoop|NameNode、DFSZKFailoverController
+alphasta02|192.168.23.192|JDK、hadoop|NameNode、DFSZKFailoverController
+alphasta01|192.168.23.191|JDK、hadoop|ResourceManager
+alphasta02|192.168.23.192|JDK、hadoop|ResourceManager
+alphasta01|192.168.23.191|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
+alphasta02|192.168.23.192|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
+alphasta03|192.168.23.193|JDK、hadoop、zookeeper|DataNode、NodeManager、JournalNode、QuorumPeerMain
 
 ## 设置系统环境
 
@@ -55,8 +55,8 @@ NAME="enp0s3"                                   网络连接名称
 UUID="b6591044-1086-4cc4-af48-876b26c0e739"
 DEVICE="enp0s3"                                 对应第一张网卡
 ONBOOT="yes"                                    是否启动运行
-IPADDR=192.168.23.181                           指定本机IP地址
-GATEWAY=192.168.16.1                            指定网关
+IPADDR=192.168.23.191                           指定本机IP地址
+GATEWAY=192.168.23.1                            指定网关
 NETMASK=255.255.255.0                            
 DNS1=222.222.222.222                            DNS地址，配置后同步到 /etc/resolv.conf
 ```
@@ -70,13 +70,10 @@ DNS1=222.222.222.222                            DNS地址，配置后同步到 /
 > 根据集群规划添加如下内容，并使用 #ping alphasta01检测
 
 ```   
-192.168.23.181     alphasta01
-192.168.23.182     alphasta02
-192.168.23.183     alphasta03
-192.168.23.184     alphasta04
-192.168.23.185     alphasta05
-192.168.23.186     alphasta06
-192.168.23.187     alphasta07
+192.168.23.191     alphasta01
+192.168.23.192     alphasta02
+192.168.23.193     alphasta03
+
 ```
 4. #### 关闭防火墙和SELinux 需重启机器生效
  
@@ -118,12 +115,8 @@ vi /etc/sysconfig/iptables                                 修改防火墙配置
 ssh-copy-id alphasta01
 ssh-copy-id alphasta02
 ssh-copy-id alphasta03
-ssh-copy-id alphasta04
-ssh-copy-id alphasta05
-ssh-copy-id alphasta06
-ssh-copy-id alphasta07
 ```
-- 验证是否免密成功 ssh alphasta01 
+- 验证是否免密成功 ssh alphasta02 
 
 ***
 ##### 集群搭建方式采用先安装配置好一台样板机，然后再拷贝到其它设备的方式进行，故需按以下顺序安装分发
@@ -220,7 +213,7 @@ export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/bin
         <!-- 指定zookeeper地址 -->
         <property>
                 <name>ha.zookeeper.quorum</name>
-                <value>alphasta05:2181,alphasta06:2181,alphasta07:2181</value>
+                <value>alphasta01:2181,alphasta02:2181,alphasta03:2181</value>
         </property>
 
         <property>
@@ -288,7 +281,7 @@ export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/bin
 	<!-- 指定NameNode的元数据在JournalNode上的存放位置 -->
 	<property>
 		<name>dfs.namenode.shared.edits.dir</name>
-		<value>qjournal://alphasta05:8485;alphasta06:8485;alphasta07:8485/alphasta</value>
+		<value>qjournal://alphasta01:8485;alphasta02:8485;alphasta03:8485/alphasta</value>
 	</property>
 
 	<!-- 指定JournalNode在本地磁盘存放数据的位置 -->
@@ -413,12 +406,12 @@ export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/bin
 	<!-- 分别指定RM的地址 -->
 	<property>
 		<name>yarn.resourcemanager.hostname.rm1</name>
-		<value>alphasta03</value>
+		<value>alphasta01</value>
 	</property>
 
 	<property>
 		<name>yarn.resourcemanager.hostname.rm2</name>
-		<value>alphasta04</value>
+		<value>alphasta02</value>
 	</property>
 
  <!-- <property> <name>yarn.resourcemanager.ha.id</name> <value>rm1</value> 
@@ -428,13 +421,13 @@ export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/bin
 	<!-- 指定zk集群地址 -->
 	<property>
 		<name>ha.zookeeper.quorum</name>
-		<value>alphasta05:2181,alphasta06:2181,alphasta07:2181</value>
+		<value>alphasta01:2181,alphasta02:2181,alphasta03:2181</value>
 	</property>
 
 	<!--配置与zookeeper的连接地址-->
 	<property>
 		<name>yarn.resourcemanager.zk-state-store.address</name>
-		<value>alphasta05:2181,alphasta06:2181,alphasta07:2181</value>
+		<value>alphasta01:2181,alphasta02:2181,alphasta03:2181</value>
 	</property>
 
 	<property>
@@ -444,7 +437,7 @@ export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/bin
 
 	<property>
 		<name>yarn.resourcemanager.zk-address</name>
-		<value>alphasta05:2181,alphasta06:2181,alphasta07:2181</value>
+		<value>alphasta01:2181,alphasta02:2181,alphasta03:2181</value>
 	</property>
 
 	<property>
@@ -467,7 +460,7 @@ export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/bin
             <!-- 指定resourcemanager地址 -->
             <property>
                     <name>yarn.resourcemanager.hostname</name>
-                    <value>alphasta03</value>
+                    <value>alphasta01</value>
             </property>
             <!-- 指定nodemanager启动时加载server的方式为shuffle server -->
             <property>
@@ -502,24 +495,20 @@ export YARN_HOME=$HADOOP_HOME
 export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
 ```
 
-> 配置slaves（slaves文件中存放的被管理者的主机名，规划中为alphasta05，alphasta06，alphasta07）
+> 配置slaves（slaves文件中存放的被管理者的主机名，规划中为alphasta01，alphasta02，alphasta03）
 
 ```
-alphasta05
-alphasta06
-alphasta07
+alphasta01
+alphasta02
+alphasta03
 ```
 - 分发已配置的应用
-    - 分别将配置好的hadoop文件分发到 alphasta01 ~ alphasta07
+    - 分别将配置好的hadoop文件分发到 alphasta01 ~ alphasta03
 
 ```
 scp -r /opt/modules/hadoop-2.9.2 root@alphasta01:/opt/modules/
 scp -r /opt/modules/hadoop-2.9.2 root@alphasta02:/opt/modules/
 scp -r /opt/modules/hadoop-2.9.2 root@alphasta03:/opt/modules/
-scp -r /opt/modules/hadoop-2.9.2 root@alphasta04:/opt/modules/
-scp -r /opt/modules/hadoop-2.9.2 root@alphasta05:/opt/modules/
-scp -r /opt/modules/hadoop-2.9.2 root@alphasta06:/opt/modules/
-scp -r /opt/modules/hadoop-2.9.2 root@alphasta07:/opt/modules/
 ```
 > 传输完后到对应的目录查看是否有相应的hadoop-2.9.2目录,并将配置文件也分发到所有节点
 
@@ -527,10 +516,6 @@ scp -r /opt/modules/hadoop-2.9.2 root@alphasta07:/opt/modules/
 scp -r /etc/profile root@alphasta01:/etc/profile
 scp -r /etc/profile root@alphasta02:/etc/profile
 scp -r /etc/profile root@alphasta03:/etc/profile
-scp -r /etc/profile root@alphasta04:/etc/profile
-scp -r /etc/profile root@alphasta05:/etc/profile
-scp -r /etc/profile root@alphasta06:/etc/profile
-scp -r /etc/profile root@alphasta07:/etc/profile
 ```
 > 传输完成使生效   source /etc/profile
 
@@ -574,9 +559,9 @@ syncLimit=5
 # example sakes.
 dataDir=/opt/modules/zookeeper-3.4.13/data
 dataLogDir=/opt/modules/zookeeper-3.4.13/logs
-server.1=alphasta05:2888:3888
-server.2=alphasta06:2888:3888
-server.3=alphasta07:2888:3888
+server.1=alphasta01:2888:3888
+server.2=alphasta02:2888:3888
+server.3=alphasta03:2888:3888
 # the port at which the clients will connect
 clientPort=2181
 # the maximum number of client connections.
@@ -595,40 +580,40 @@ clientPort=2181
 #autopurge.purgeInterval=1
 ```
 
-> [root@alphasta05 zookeeper-3.4.13]$ cd data 
+> [root@alphasta01 zookeeper-3.4.13]$ cd data 
 
-> [root@alphasta05 data]$ vi myid     添加内容    1
+> [root@alphasta01 data]$ vi myid     添加内容    1
 
-- 3.复制alphasta05 的zookeeper-3.4.13到alphasta06 和alphasta07 上
+- 3.复制alphasta01 的zookeeper-3.4.13到alphasta02 和alphasta03 上
 
-> [root@alphasta05 opt]$ scp -r zookeeper-3.4.13 root@alphasta06:/opt/modules/
+> [root@alphasta01 opt]$ scp -r zookeeper-3.4.13 root@alphasta02:/opt/modules/
 
-> [root@alphasta05 opt]$ scp -r zookeeper-3.4.13 root@alphasta07:/opt/modules/
+> [root@alphasta01 opt]$ scp -r zookeeper-3.4.13 root@alphasta03:/opt/modules/
 
-- 4.分别修改alphasta06 和alphasta07 上myid的值为2和3
-> [root@alphasta06 zookeeper-3.4.13]$ vi data/myid        2
+- 4.分别修改alphasta02 和alphasta03 上myid的值为2和3
+> [root@alphasta02 zookeeper-3.4.13]$ vi data/myid        2
 
-> [root@alphasta07 zookeeper-3.4.13]$ vi data/myid        3
+> [root@alphasta03 zookeeper-3.4.13]$ vi data/myid        3
 
-- 5.分别启动alphasta05 、alphasta06 、alphasta07 上的zookeeper
+- 5.分别启动alphasta01 、alphasta02 、alphasta03 上的zookeeper
 
-> [root@alphasta05 zookeeper-3.4.13]$ bin/sh zkServer.sh start
+> [root@alphasta01 zookeeper-3.4.13]$ bin/sh zkServer.sh start
 
-> [root@alphasta06 zookeeper-3.4.13]$ bin/sh zkServer.sh start
+> [root@alphasta02 zookeeper-3.4.13]$ bin/sh zkServer.sh start
 
-> [root@alphasta07 zookeeper-3.4.13]$ bin/sh zkServer.sh start
+> [root@alphasta03 zookeeper-3.4.13]$ bin/sh zkServer.sh start
 
 - 6.查看zookeeper的状态
 ```
-[root@alphasta05 zookeeper-3.4.13]$ bin/ sh zkServer.sh status
+[root@alphasta01 zookeeper-3.4.13]$ bin/ sh zkServer.sh status
 ZooKeeper JMX enabled by default
 Using config: /opt/modules/zookeeper-3.4.13/bin/../conf/zoo.cfg
 Mode: follower
-[root@alphasta06 zookeeper-3.4.13]$ bin/ sh zkServer.sh status
+[root@alphasta02 zookeeper-3.4.13]$ bin/ sh zkServer.sh status
 ZooKeeper JMX enabled by default
 Using config: /opt/modules/zookeeper-3.4.10/bin/../conf/zoo.cfg
 Mode: leader
-[root@alphasta07 zookeeper-3.4.13]$ bin/sh zkServer.sh status
+[root@alphasta03 zookeeper-3.4.13]$ bin/sh zkServer.sh status
 ZooKeeper JMX enabled by default
 Using config: /opt/modules/zookeeper-3.4.10/bin/../conf/zoo.cfg
 Mode: follower
@@ -637,21 +622,21 @@ Mode: follower
 ## 启动hadoop集群
 
 1. #### 启动zookeeper集群
-    - 分别在alphasta05、alphasta06、alphasta07上执行如下命令启动zookeeper集群
+    - 分别在alphasta01、alphasta02、alphasta03上执行如下命令启动zookeeper集群
 
-> [root@alphasta05 zookeeper-3.4.13/bin]$ sh zkServer.sh start
+> [root@alphasta01 zookeeper-3.4.13/bin]$ sh zkServer.sh start
 
 - 验证zookeeper集群是否启动成功，有两个follower节点跟一个leader节点
 
-> [root@alphasta05 zookeeper-3.4.13/bin]$ sh zkServer.sh status
+> [root@alphasta01 zookeeper-3.4.13/bin]$ sh zkServer.sh status
 
 2. #### 启动journalnode集群
 
-> 根据集群规划，运行节点有 alphasta05，alphasta06，alphasta07
+> 根据集群规划，运行节点有 alphasta01，alphasta02，alphasta03
 
 > sbin目录下，有 hadoop-daemon.sh(单独启动某台设备的某个进程)和 hadoop-daemons.sh(启动所有设备的某个进程)
 
-> [root@alphasta05 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start journalnode
+> [root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start journalnode
 
 > 执行jps，查看JournalNode进程
 
@@ -661,12 +646,12 @@ Mode: follower
 
 > 命令 hdfs zkfc -formatZK 完成格式化
 
-> 格式化成功后，查看zookeeper [root@alphasta05 bin]# sh zkCli.sh -server alphasta05:2181
+> 格式化成功后，查看zookeeper [root@alphasta01 bin]# sh zkCli.sh -server alphasta05:2181
 
 ```
-[zk: alphasta05:2181(CONNECTED) 2] ls /
+[zk: alphasta01:2181(CONNECTED) 2] ls /
 [zookeeper, hadoop-ha]
-[zk: alphasta05:2181(CONNECTED) 3]
+[zk: alphasta01:2181(CONNECTED) 3]
 ```
 
 4. #### 格式化hdfs
@@ -691,19 +676,19 @@ Mode: follower
 
 6. #### 启动datanode
 
-> 集群规划 alphasta05 alphasta06 alphasta07 上运行 datanode
+> 集群规划 alphasta01 alphasta02 alphasta03 上运行 datanode
 
 > [root@alphasta01 hadoop-2.9.2]$ sbin/hadoop-daemon.sh start datanode
 
-> 这里选择单独启动，测试中选择全部启动时，结果也只有一个节点启动，至于原因待研究
+> 这里选择单独启动，测试中选择全部启动时，结果也只有一个节点启动，至于原因待研究，所以也需在其它节点上启动该命令
 
 7. #### 启动yarn
 
-> 运行节点 alphasta03
+> 运行节点 alphasta01
 
 > [root@alphasta01 hadoop-2.9.2]$ sbin/start-yarn.sh
 
-> 启动之后，只有本节点运行了，故还需要在 alphasta04 上执行此命令 （至于原因，待研究）
+> 启动之后，只有本节点运行了，故还需要在 alphasta02 上执行此命令 （至于原因，待研究）
 
 8. #### 启动zkfc
 
@@ -713,10 +698,10 @@ Mode: follower
 
 ### 全部启动后，查看进程
 
-- 每个节点的进程都跟规划中的一致，除了alphasta03（多了一个nodemanager，待研究）不影响使用
+- ~~每个节点的进程都跟规划中的一致，除了alphasta03（多了一个nodemanager，待研究）不影响使用~~
 
 - 验证namenode HA 
-    - 分别登录nn1 nn2 管理控制台 http://192.168.23.181:50070 http://192.168.23.182:50070 查看其状态，然后关掉active状态的节点，查看另一个节点是否有standby 改为active
+    - 分别登录nn1 nn2 管理控制台 http://192.168.23.191:50070 http://192.168.23.192:50070 查看其状态，然后关掉active状态的节点，查看另一个节点是否有standby 改为active
 
 - 验证ResourceManager HA 
     - 使用该命令 yarn rmadmin -getServiceState rm1  可查看rm1的状态 yarn rmadmin -getServiceState rm2 查看rm2的状态，同样 关掉一个看另一个的状态的变化
