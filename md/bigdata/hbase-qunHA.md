@@ -21,7 +21,7 @@ alphasta03|192.168.23.193|hbase|HRegionServer
 
 ## 部署HBase   
 
-> tar -zxvf hbase-2.1.2-bin.tar.gz -C /opt/modules/         解压缩HBase压缩包
+> tar -zxvf hbase-2.1.2-bin.tar.gz -C /opt/modules/         解压缩HBase到固定目录
 
 1. hbase-env.sh 文件      
 
