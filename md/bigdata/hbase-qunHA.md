@@ -70,3 +70,7 @@ alphasta03|192.168.23.193|hbase|HRegionServer
 > bin/start-hbase.sh 
 
 > 在alphasta01、alphasta02、alphasta03任意一台机器使用bin/hbase shell 进入shell环境，使用命令version等，查看hbase信息
+
+## 查看各节点进程
+
+于集群规划中的一致
