@@ -165,8 +165,8 @@ export PATH=$PATH:$JAVA_HOME/bin
     - 如果profile文件已经配置，各个节点不一样，就选择各自配置profile即可
 
 ```
-scp -r /usr/lib/jdk1.8.0_191 root@alphasta07:/usr/lib/
-scp -r /etc/profile root@alphasta07:/etc/
+scp -r /usr/lib/jdk1.8.0_191 root@alphasta02:/usr/lib/
+scp -r /etc/profile root@alphasta02:/etc/
 ```
 
 - 分发到新节点后，需要生效 source /etc/profile 配置文件
@@ -532,19 +532,19 @@ scp -r /etc/profile root@alphasta03:/etc/profile
 
 - 验证成功，并授权
 
-> [root@alphasta05 zookeeper-3.4.13]$cd /opt/modules/    ls  
+> [root@alphasta01 zookeeper-3.4.13]$cd /opt/modules/    ls  
 
-> [root@alphasta05 zookeeper-3.4.13]$ chmod +wxr zookeeper-3.4.13
+> [root@alphasta01 zookeeper-3.4.13]$ chmod +wxr zookeeper-3.4.13
 
 - 2.修改zookeeper的配置文件，并建立数据目录和日志目录
 
-> [root@alphasta05 modules]$ cd zookeeper-3.4.13
+> [root@alphasta01 modules]$ cd zookeeper-3.4.13
 
-> [root@alphasta05 zookeeper-3.4.13]$ mkdir data
+> [root@alphasta01 zookeeper-3.4.13]$ mkdir data
 
-> [root@alphasta05 zookeeper-3.4.13]$ mkdir logs
+> [root@alphasta01 zookeeper-3.4.13]$ mkdir logs
 
-> [root@alphasta05 zookeeper-3.4.13]$ vi conf/zoo.cfg
+> [root@alphasta01 zookeeper-3.4.13]$ vi conf/zoo.cfg
 ```
 # The number of milliseconds of each tick
 tickTime=2000
@@ -698,7 +698,7 @@ Mode: follower
 
 ### 全部启动后，查看进程
 
-- ~~每个节点的进程都跟规划中的一致，除了alphasta03（多了一个nodemanager，待研究）不影响使用~~
+- 每个节点的进程都跟规划中的一致，除了alphasta03（多了一个nodemanager，待研究）不影响使用
 
 - 验证namenode HA 
     - 分别登录nn1 nn2 管理控制台 http://192.168.23.191:50070 http://192.168.23.192:50070 查看其状态，然后关掉active状态的节点，查看另一个节点是否有standby 改为active
