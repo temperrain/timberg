@@ -25,7 +25,7 @@ alphasta03|192.168.23.193|hbase|HRegionServer
 
 1. hbase-env.sh 文件      
 ```
-JAVA_HOME=export JAVA_HOME=/usr/lib/jdk1.8.0_191          在hbase-env.sh文件中，添加java环境变量
+export JAVA_HOME=/usr/lib/jdk1.8.0_191          在hbase-env.sh文件中，添加java环境变量
 
 export  HBASE_MANAGES_ZK=false                            关闭HBase自带的Zookeeper,使用Zookeeper集群
 
