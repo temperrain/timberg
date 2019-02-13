@@ -23,6 +23,14 @@ alphasta03|192.168.23.193|hbase|HRegionServer
 
 > tar -zxvf hbase-2.1.2-bin.tar.gz -C /opt/modules/         解压缩HBase到固定目录
 
+#### 环境变量
+```
+vi /etc/profile   添加如下内容
+
+export HBASE_HOME=/root/software/hbase-1.2.1
+export PATH=$PATH:$HBASE_HOME/bin
+```
+
 1. hbase-env.sh 文件      
 ```
 export JAVA_HOME=/usr/lib/jdk1.8.0_191                    在hbase-env.sh文件中，添加java环境变量
@@ -38,22 +46,27 @@ export HBASE_CLASSPATH=$HADOOP_HOME/etc/hadoop            表示使用hdfs作为
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
-　　<property> 
-　　　　<name>hbase.rootdir</name> 
-　　　　<value>hdfs://alphasta01:8020/hbase</value> 
-　　</property> 
-　　<property> 
-　　　　<name>hbase.cluster.distributed</name> 
-　　　　<value>true</value> 
-　　</property> 
-　　<property> 
-　　　　<name>hbase.zookeeper.quorum</name> 
-　　　　<value>alphasta01,alphasta02,alphasta03</value> 
-　　</property> 
-　　<property> 
-　　　　<name>hbase.zookeeper.property.dataDir</name> 
-　　　　<value>/opt/modules/hbase-2.1.2/tmp/zk/data</value> 
+　　<property>
+　　　　<name>hbase.rootdir</name>
+　　　　<value>hdfs://alphasta01:8020/hbase</value>
 　　</property>
+　　<property>
+　　　　<name>hbase.cluster.distributed</name>
+　　　　<value>true</value>
+　　</property>
+　　<property>
+　　　　<name>hbase.zookeeper.quorum</name>
+　　　　<value>alphasta01,alphasta02,alphasta03</value>
+　　</property>
+　　<property>
+　　　　<name>hbase.zookeeper.property.dataDir</name>
+　　　　<value>/opt/modules/hbase-2.1.2/tmp/zk/data</value>
+　　</property>
+
+    <property>
+        <name>hbase.unsafe.stream.capability.enforce</name>
+        <value>false</value>
+    </property>
 </configuration>
 ```
 
@@ -61,7 +74,14 @@ export HBASE_CLASSPATH=$HADOOP_HOME/etc/hadoop            表示使用hdfs作为
 
 > vi   regionservers           编辑文件,加入 alphasta02 alphasta03 一个一行
 
-4. 将HBase复制分发到 alphasta02、alphasta03的机器上
+4. 将 htrace-core-3.1.0-incubating.jar复制到lib路径下
+
+```
+cd $HBASE_HOME
+cp lib/client-facing-thirdparty/htrace-core-3.1.0-incubating.jar lib/
+```
+
+5. 将HBase复制分发到 alphasta02、alphasta03的机器上
 
 > [root@alphasta01 modules]$ scp -r hbase-2.1.2 root@alphasta02:/opt/modules
 
