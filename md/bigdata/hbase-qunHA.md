@@ -24,10 +24,13 @@ alphasta03|192.168.23.193|hbase|HRegionServer
 > tar -zxvf hbase-2.1.2-bin.tar.gz -C /opt/modules/         解压缩HBase到固定目录
 
 1. hbase-env.sh 文件      
+```
+JAVA_HOME=export JAVA_HOME=/usr/lib/jdk1.8.0_191          在hbase-env.sh文件中，添加java环境变量
 
-> JAVA_HOME=export JAVA_HOME=/usr/lib/jdk1.8.0_191          在hbase-env.sh文件中，添加java环境变量
+export  HBASE_MANAGES_ZK=false                            关闭HBase自带的Zookeeper,使用Zookeeper集群
 
-> export  HBASE_MANAGES_ZK=false                            关闭HBase自带的Zookeeper,使用Zookeeper集群
+export HBASE_CLASSPATH=$HADOOP_HOME/etc/hadoop            表示使用hdfs作为HBase的储存
+```
 
 2. hbase-site.xml 文件
 
